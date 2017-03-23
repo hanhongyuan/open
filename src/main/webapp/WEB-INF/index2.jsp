@@ -26,7 +26,7 @@
     </script>
 </head>
 <body>
-appId:<input id="appId" type="text" value="" />
+appId:<input id="appId" type="text" value="wx4f6a40c48f6da430" />
 <input type="button" value="认证" onclick="_submit()">
 
 </body>
