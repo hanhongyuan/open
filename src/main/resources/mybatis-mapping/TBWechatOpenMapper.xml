@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis_mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhsj.open.dao.TBWechatOpenDao">
+	<sql id="TABLE">tb_wechat_open</sql>
+
+    <select id="getOne" resultType="tbWechatOpen">
+       SELECT id,NAME,app_id,app_secret,component_verify_ticket,utime,ctime 
+       FROM <include refid="TABLE"/>
+    </select>
+
+	<update id="updateByAppId">
+		update <include refid="TABLE"/>
+		set component_verify_ticket = #{ticket} , utime= unix_timestamp(now())
+		where app_id = #{appId}
+	</update>
+
+</mapper>

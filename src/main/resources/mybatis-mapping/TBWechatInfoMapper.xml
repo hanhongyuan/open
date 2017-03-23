@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis_mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhsj.open.dao.TBWechatInfoDao">
+	<sql id="TABLE">tb_wechat_info</sql>
+
+    <select id="getList" resultType="tbWechatInfo">
+       SELECT id,app_id,app_secret,token,refresh_token,expires_time
+       FROM <include refid="TABLE"/>
+       where status = 1 
+    </select>
+
+	<update id="updateByAppId">
+		update  <include refid="TABLE"/>
+		set token = #{token},refresh_token=#{refreshToke}
+		where app_id= #{appId}
+	</update>
+
+</mapper>
