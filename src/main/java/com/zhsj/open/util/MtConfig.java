@@ -16,12 +16,6 @@ public class MtConfig {
         try {
             InputStream stream = MtConfig.class.getClassLoader().getResourceAsStream("config.properties");
             properties.load(stream);
-
-//            Properties systemProps = System.getProperties();
-//            systemProps.put("javax.net.ssl.trustStore",properties.get("JSSECACERTS_PATH") );
-//            systemProps.put("javax.net.ssl.keyStore", properties.get("CERT_PATH_JKS"));
-//            systemProps.put( "javax.net.ssl.keyStorePassword", properties.get("CERT_JKS_P12_PASSWORD") );
-//            System.setProperties(systemProps);
         } catch (IOException e) {
             e.printStackTrace();
         }
