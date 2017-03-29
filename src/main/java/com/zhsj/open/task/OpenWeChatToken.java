@@ -55,7 +55,7 @@ public class OpenWeChatToken {
                     logger.error("#OpenWeChatToken.process# e={},e", e.getMessage(),e);
                 }
             }
-        }, 100, 3600, TimeUnit.SECONDS);
+        }, 1, 3600, TimeUnit.SECONDS);
     }
 
     public void refresh(){

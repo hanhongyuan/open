@@ -8,7 +8,7 @@
     
     
     var _href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx79bd044fd98536f4"+
-    			"&redirect_uri=http%3a%2f%2fwwt.bj37du.com%2fopen%2fcallback"+
+    			"&redirect_uri=http%3a%2f%2f"+host+"%2fopen%2fcallback"+
     			"&response_type=code&scope=snsapi_base&state=STATE&component_appid=wx4f6a40c48f6da430#wechat_redirect";
    // window.location.href=_href;
     	function _submit(){
@@ -16,7 +16,7 @@
     		$.get("./authWeChat",{"appId":appId},function(data){
     			if(data.code == 0){
     				var preAuthCode = data.data;
-    				var _href = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx4f6a40c48f6da430&pre_auth_code="+preAuthCode+"&redirect_uri=http%3a%2f%2fwwt.bj37du.com%2fopen%2fcallback%3fappId%3d"+appId;
+    				var _href = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx4f6a40c48f6da430&pre_auth_code="+preAuthCode+"&redirect_uri=http%3a%2f%2f"+host+"%2fopen%2fcallback%3fappId%3d"+appId;
     				window.location.href = _href;
     			}else{
     				alert(data.msg);
