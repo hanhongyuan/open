@@ -90,23 +90,27 @@ public class WXService {
     
     public boolean sendMessage(String appId,String[] openIds,String message,String url){
     	try{
+    		boolean flag = true;
     		 String token = WeChatToken.TOKEN_MAP.get(appId);
              String _url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
-
              for(String openId:openIds){
                  if(StringUtils.isEmpty(openId)){
                      continue;
                  }
-                 message = message.replace("_openId",openId);
-                 message = message.replace("_url",url);
-                 logger.info("#WXService.sendMessage# url={},msg={}",_url,message);
-                 String result = SSLUtil.postSSL(_url, message);
+                 String msg = message;
+                 msg = msg.replace("_openId",openId);
+                 msg = msg.replace("_url",url);
+                 logger.info("#WXService.sendMessage# url={},msg={}",_url,msg);
+                 String result = SSLUtil.postSSL(_url, msg);
                  logger.info("#WXService.sendMessage# result orderId={},result={}",result);
                  Map<String,Object> map = JSON.parseObject(result,Map.class);
-                 if((Integer)map.get("errcode") != null && (Integer)map.get("errcode") ==0){
-                	 return true;
+                 if((Integer)map.get("errcode") != null && (Integer)map.get("errcode") ==0 && flag){
+                	 flag = true;
+                 }else{
+                	 flag = false;
                  }
              }
+             return flag;
     	}catch(Exception e){
     		logger.error("#WXService.sendMessage# e={}",e.getMessage(),e);
     	}
