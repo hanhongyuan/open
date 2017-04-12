@@ -50,7 +50,7 @@ public class MultipleDataSourceAspect {
                     try {
                         return this.dsSettingInConstructor(declaringClazz);
                     } catch (Exception var6) {
-                        LOG.error("鑾峰彇鏋勯�鏂规硶鐨凞ataSource娉ㄨВ澶辫触", var6);
+                        LOG.error("获取构造方法的DataSource注解失败", var6);
                     }
                 }
             }
