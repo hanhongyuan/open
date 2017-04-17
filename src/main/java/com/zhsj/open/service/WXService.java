@@ -26,6 +26,9 @@ import org.xml.sax.InputSource;
 import java.io.StringReader;
 import java.lang.String;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -81,6 +84,9 @@ public class WXService {
             String json = SSLUtil.getSSL(stringBuilder.toString());
             logger.info("#WXService.getOpenId # userinf2o result={}",json);
             userInfo = JSON.parseObject(json, WeixinUserBean.class);
+            if(StringUtils.isNotEmpty(userInfo.getNickname())){
+            	userInfo.setNickname(filterEmoji(userInfo.getNickname()));
+            }
     	}catch(Exception e){
     		logger.error("#WXService.getWeixinUserInfo# error appId={},openId={}",appId,openId,e);
     	}
@@ -315,24 +321,27 @@ public class WXService {
 
  
     public static void main(String[] args) throws Exception {
-//    	String json = "{authorization_info={\"func_info\":[{\"funcscope_category\":{\"id\":15}},{\"funcscope_category\":{\"id\":4}},{\"funcscope_category\":{\"id\":7}},{\"funcscope_category\":{\"id\":2}}],\"authorizer_appid\":\"wx79bd044fd98536f4\",\"authorizer_refresh_token\":\"refreshtoken@@@WYpBQ3PCVeS2hAdBLBhUlZA3zlg_egysK6TeEzuI21g\",\"expires_in\":7200,\"authorizer_access_token\":\"bTAFOtD1k9hOMWzDkK8s5zkFna-gYlJYILelRpHM5naDdBxOq7y-appPBhcu0dojfEViApryX7_wnn5jNzMWpYgUnwRxhUj4_v-9zDLRIDnXu2J3Hiv3OZptSqieDNMGNKGfAEDVSO\"}}";
-//    	 Map<String,String> map = JSON.parseObject(json, Map.class);
-    	String json = "{\"errcod2e\":40013,\"errmsg\":\"invalid appid\"}";
-    	WeixinUserBean userInfo = JSON.parseObject(json, WeixinUserBean.class);
-    	
-    	
-    	
-//    	,timestamp=1489991424,nonce=1985375899,fromXML=<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[iWdSMmbQpeJ9mpLHvIbV7+LycLaYUKZUUpFtR/tuJZLcyi6YGF3gwDc4Prv2V1NEGE4q6LU0brcmK4vRGa6vXWZCDM55JQquyQW3ft0CW2wIVeon9ALQ18iY86ktfGtxB0wij1iHFSQsi3G0fS6qVGaEzlNxvYdpxdHZ9TXMTQcet5KbescrDfzSuMobj5omfBR3ggV7/ma29vbqpR0N7w7VRzZ+rGeOJ6gaAqKisxXikn0vWc7YGTGvMa0M/Jn5/xsYg2srR5FdWyzPr8LGLWla/wURUmex56/6x58JGBOL6+X1/g/dUfZTABMoETeITwFoMfdtewEV4JmpREZyNEj4REhEdPJbmqti8odL7Ap2UceQatR3QmASatGGn2O7yhBT7zUFsh0f3m6yTBcA6VwcrgOve8VruA2Prz1ZMguTJs0n3nE5pu/0ry7UL2dCgTtDW+i5WTdH5Di0eaoAFA==]]></Encrypt></xml>
-    	
-//    	String signature="14e49c58666900f2db85aebbebc3f0656f3e7ad7";
-//    	String timestamp="1490006712";
-//    	String nonce="1030935370";
-//    	String encryptType="aes";
-//    	String msgSignature="d88810ba3c70319a8aa18629d0f7b7bdeabdf8e5";
-//    	String content="<xml><AppId><![CDATA[wx4f6a40c48f6da430]]></AppId><Encrypt><![CDATA[Ko3WxeKanuZhHAJNAd60DD/eyy/b3DifqHtX0IHeYHoSix/5oytSo016LLqqN72NIbcM/o36pahAm7HbTpiT0iNMer+14K6JfeghAzoWOvRoPYz6cSBKJdZwADIu62ktdN7TxnsMxNpOimsNZ3Ot+b6IJSxWQ6JdjFBASvTkfxwg7cRZzGdZlFywQtu+U8bPkDt41rFJ6o126/iIXHwyVARxmyC+zthYv0Lv7MoQtRwTh+O455aZzvttUymmXUrkfzQFl7OGFPfQuItROiRW4S7aF7L1F3AGZh5L0uZKBFeSyKQQLmhkxBpV8ssm9j+Fe7YsaTefw0QlSDzk+A74TuWbj0YTSOwK0oxFEJQ5VA/SgjHMGi20cuSZ/Ze8tjpZwem+f8byDIzoU5zqAyuHECWA84l48fwZyKV8jNNW2h40/AnT5w78CEVQgFW2vvlgZwohJigqcmWayid/Sxquz32OY+C/V/Xviq00yMN50Ywdf/nSKZhmNGU8MPA8PonRl/gPLiw9jeagUBEwx5kRjw1KTFMNnqr1kDWpWHdaQwS9vIc7Z17uNEETWOE1g/ykvALSe/n4d3e7i1Qz46AgikMu5aTdyu/M9t9j+d7TIsa8ZNM8/wzchAcUpdpXDIz4]]></Encrypt></xml>";
-//    
-//    
-//    new WXService().analyzeReceiveMsg(signature, timestamp, nonce, encryptType, msgSignature, content);
+    	String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=56vuc-6VD7BRUfrH1R3LBB-s_4f-IIiX7vgFlhvFYGLxDbsTH03XGv1yoMwmcarL-Z7zlRztHuloV6rRGdfK9XSjSyAgCqZh2-M4Mp0cRwMBsAbxWLAWK_IP2Z_Q1VQIWVNcCGAGFX&openid=o5pmes4UQPdXawhFrFdAVFvuuQg0";
+    	 String json = SSLUtil.getSSL(url);
+         logger.info("#WXService.getOpenId # userinf2o result={}",json);
+         WeixinUserBean  userInfo = JSON.parseObject(json, WeixinUserBean.class);
+         System.out.println("=="+userInfo.getNickname()+"==");
+         System.out.println("=="+filterEmoji(null)+"==");
+    }
+    
+    public static String filterEmoji(String source) {  
+        if(source != null)
+        {
+            Pattern emoji = Pattern.compile ("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE ) ;
+            Matcher emojiMatcher = emoji.matcher(source);
+            if ( emojiMatcher.find()) 
+            {
+                source = emojiMatcher.replaceAll("*");
+                return source ; 
+            }
+        return source;
+       }
+       return source;  
     }
 
 }
