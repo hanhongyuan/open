@@ -321,27 +321,20 @@ public class WXService {
 
  
     public static void main(String[] args) throws Exception {
-    	String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=56vuc-6VD7BRUfrH1R3LBB-s_4f-IIiX7vgFlhvFYGLxDbsTH03XGv1yoMwmcarL-Z7zlRztHuloV6rRGdfK9XSjSyAgCqZh2-M4Mp0cRwMBsAbxWLAWK_IP2Z_Q1VQIWVNcCGAGFX&openid=o5pmes4UQPdXawhFrFdAVFvuuQg0";
+    	String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=56vuc-6VD7BRUfrH1R3LBB-s_4f-IIiX7vgFlhvFYGLxDbsTH03XGv1yoMwmcarL-Z7zlRztHuloV6rRGdfK9XSjSyAgCqZh2-M4Mp0cRwMBsAbxWLAWK_IP2Z_Q1VQIWVNcCGAGFX&openid=oFvcxwTKBustL7DX3xH6rl5pSVSs";
     	 String json = SSLUtil.getSSL(url);
          logger.info("#WXService.getOpenId # userinf2o result={}",json);
          WeixinUserBean  userInfo = JSON.parseObject(json, WeixinUserBean.class);
          System.out.println("=="+userInfo.getNickname()+"==");
-         System.out.println("=="+filterEmoji(null)+"==");
+         System.out.println("=="+filterEmoji("你好  hello 123")+"==");
     }
     
     public static String filterEmoji(String source) {  
-        if(source != null)
-        {
-            Pattern emoji = Pattern.compile ("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE ) ;
-            Matcher emojiMatcher = emoji.matcher(source);
-            if ( emojiMatcher.find()) 
-            {
-                source = emojiMatcher.replaceAll("*");
-                return source ; 
-            }
-        return source;
-       }
-       return source;  
+    	if(StringUtils.isNotBlank(source)){  
+            return source.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");  
+        }else{  
+            return source;  
+        }  
     }
 
 }
