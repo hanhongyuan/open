@@ -12,7 +12,7 @@
     			"&response_type=code&scope=snsapi_base&state=STATE&component_appid=wx4f6a40c48f6da430#wechat_redirect";
    // window.location.href=_href;
     	function _submit(){
-    		var appId = $("#appId").val();
+    		var appId = "wx4f6a40c48f6da430";
     		$.get("./authWeChat",{"appId":appId},function(data){
     			if(data.code == 0){
     				var preAuthCode = data.data;
@@ -23,11 +23,15 @@
     			}
     		})
     	}
+    	
+    	$(function(){
+    		_submit();
+    	});
     </script>
 </head>
 <body>
-appId:<input id="appId" type="text" value="wx4f6a40c48f6da430" />
-<input type="button" value="认证" onclick="_submit()">
+<h1>智慧商街</h1>
+<h2>Hello word!!!</h2>
 
 </body>
 </html>

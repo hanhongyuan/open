@@ -65,7 +65,7 @@ public class OpenWeChatToken {
         														OPEN_WECHAT_INFO.get(WeChatConstants.VERIFY_TICKET));
       	   if(StringUtils.isNotEmpty(componentToken)){
       		   OPEN_WECHAT_INFO.put(WeChatConstants.TOKEN, componentToken);
-      		   weChatToken.process();
+      		   weChatToken.refresh();
       	   }
         }catch (Exception e){
             logger.error("#OpenWeChatToken.refresh# e={}",e.getMessage(),e);

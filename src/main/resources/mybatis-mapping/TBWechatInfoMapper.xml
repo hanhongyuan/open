@@ -11,7 +11,15 @@
 
 	<update id="updateByAppId">
 		update  <include refid="TABLE"/>
-		set token = #{token},refresh_token=#{refreshToke}
+		set token = #{token},refresh_token=#{refreshToke},status=#{status}
+		 , utime = unix_timestamp(now())
+		where app_id= #{appId}
+	</update>
+	
+	<update id="updateStatus">
+		update  <include refid="TABLE"/>
+		set status=#{status}
+		 , utime = unix_timestamp(now())
 		where app_id= #{appId}
 	</update>
 

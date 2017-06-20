@@ -310,7 +310,10 @@ public class WXService {
     					logger.info("#WXService.analyzeReceiveMsg# error auth is null");
     					return;
     				}
-    				tbWechatInfoDao.updateByAppId(auth.getAuthorizer_access_token(), auth.getAuthorizer_refresh_token(), auth.getAuthorizer_appid());
+    				tbWechatInfoDao.updateByAppId(auth.getAuthorizer_access_token(), auth.getAuthorizer_refresh_token(), auth.getAuthorizer_appid(),1);
+    			}
+    			if("unauthorized".equals(authBean.getInfoType())){
+    				tbWechatInfoDao.updateStatus(appId,2);
     			}
     		}
     	}catch(Exception e){

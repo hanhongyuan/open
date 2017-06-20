@@ -17,6 +17,10 @@ public interface TBWechatInfoDao {
 	
 	int updateByAppId(@Param("token")String token,
 					  @Param("refreshToke")String refreshToke,
-					  @Param("appId")String appId);
+					  @Param("appId")String appId,
+					  @Param("status")int status);
+	
+	int updateStatus( @Param("appId")String appId,
+			  @Param("status")int status);
 	
 }
